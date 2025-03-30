@@ -33,7 +33,7 @@ impl Writer {
             write_i8(&mut port, order).unwrap();
             let mut a = read_i8(&mut port).unwrap();
             print!("'{}'", a);
-            if (a > 0) {
+            if (a > 6) {
                 a -= 48;
             }
 
