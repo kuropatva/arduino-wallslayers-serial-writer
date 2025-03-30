@@ -1,0 +1,13 @@
+[package]
+name = "ardCommander"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+enum-map = "2.7.3"
+robust-arduino-serial = "0.1.1"
+serial = "0.4.0"
+
+[[bin]]
+name = "main"
+path = "src/main.rs"
