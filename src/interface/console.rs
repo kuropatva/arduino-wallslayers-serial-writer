@@ -16,10 +16,7 @@ impl Input for Console {
             let mut input = String::new();
             io::stdin().read_line(&mut input).expect("Incorrect value");
 
-            match input.trim().parse() {
-                Ok(n) => return Data::Integer(n),
-                _ => (),
-            };
+            if let Ok(n) = input.trim().parse() { return Data::Integer(n) };
         }
     }
 
