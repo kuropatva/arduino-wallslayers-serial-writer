@@ -1,6 +1,7 @@
 use std::io::{self};
 
-use crate::physicalio::{data::Data, datatype::Datatype, input::Input};
+use crate::data::{data::Data, datatype::Datatype};
+use crate::io::input::Input;
 
 pub struct Console {}
 
@@ -16,14 +17,13 @@ impl Input for Console {
             let mut input = String::new();
             io::stdin().read_line(&mut input).expect("Incorrect value");
 
-            match input.trim().parse() {
-                Ok(n) => return Data::Integer(n),
-                _ => (),
+            if let Ok(n) = input.trim().parse() {
+                return Data::Integer(n);
             };
         }
     }
 
-    fn data_type(&self) -> crate::physicalio::datatype::Datatype {
+    fn data_type(&self) -> Datatype {
         Datatype::ConsoleIn
     }
 }

@@ -14,15 +14,13 @@ const SETTINGS: serial::PortSettings = serial::PortSettings {
     flow_control: serial::FlowNone,
 };
 
-const SERIAL_PORT: &str = "COM10";
-
 pub struct Writer {
     port: COMPort,
 }
 
 impl Writer {
-    pub fn new() -> Writer {
-        let mut port = serial::open(&SERIAL_PORT.to_string()).unwrap();
+    pub fn new(serial_port_name: &str) -> Writer {
+        let mut port = serial::open(serial_port_name).unwrap();
         port.configure(&SETTINGS).unwrap();
         port.set_timeout(Duration::from_secs(30)).unwrap();
 
@@ -31,19 +29,22 @@ impl Writer {
         loop {
             let order = Order::HELLO as i8;
             write_i8(&mut port, order).unwrap();
-            let mut a = read_i8(&mut port).unwrap();
-            print!("'{}'", a);
-            if (a > 6) {
-                a -= 48;
+            let mut answer = read_i8(&mut port).unwrap();
+            print!("'{}'", answer);
+
+            if answer > 6 {
+                // testing purpose, "0" = 48
+                answer -= 48;
             }
 
-            let received_order = Order::from_i8(a);
-            if received_order != None {
+            let received_order = Order::from_i8(answer);
+            if received_order.is_some() {
                 let received_order = received_order.unwrap();
                 if received_order == Order::ALREADY_CONNECTED {
                     break;
                 }
             }
+
             thread::sleep(Duration::from_secs(1));
         }
 
@@ -53,10 +54,10 @@ impl Writer {
     }
 
     pub fn write32(&mut self, i: i32) {
-        write_i32(&mut self.port, i);
+        let _ = write_i32(&mut self.port, i);
     }
 
     pub fn write16(&mut self, i: i16) {
-        write_i16(&mut self.port, i);
+        let _ = write_i16(&mut self.port, i);
     }
 }

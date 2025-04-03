@@ -1,22 +1,39 @@
 use std::collections::HashMap;
 
-use interface::console::Console;
-use physicalio::{
-    data::Data, datatype::Datatype, electronics::wheel_out_wrapper::WheelOutWrapper, input::Input,
-    output::Output, writer::Writer,
-};
+use crate::data::{data::Data, datatype::Datatype};
+use crate::io::interface::console::Console;
+use io::physical::{electronics::wheel_out_wrapper::WheelOutWrapper, writer::Writer};
+use io::{input::Input, output::Output};
+use processing::{logic::Logic, logic_console::LogicBasicConsole};
 
-mod interface;
-mod physicalio;
+pub mod data;
+pub mod io;
+pub mod processing;
 
 fn main() -> ! {
-    let mut writer = Writer::new();
-    let mut wrapper = WheelOutWrapper::new(&mut writer);
-    let console = Console::new();
+    let serial_port_name = "COM10";
+
+    let mut writer = Writer::new(serial_port_name);
+
+    let mut inputs: Vec<Box<dyn Input>> = Vec::new();
+    inputs.push(Box::new(Console::new()));
+
+    let mut outputs: Vec<Box<dyn Output>> = Vec::new();
+    outputs.push(Box::new(WheelOutWrapper::new(&mut writer)));
+
+    let logic: Box<dyn Logic> = Box::new(LogicBasicConsole::new());
+
     let mut map: HashMap<Datatype, Data> = HashMap::new();
+
     loop {
-        map.clear();
-        map.insert(Datatype::WheelOut, console.get());
-        wrapper.push(&map);
+        let in_map = HashMap::new();
+
+        for i in &inputs {
+            map.insert(i.data_type(), i.get());
+        }
+
+        let out_map = logic.process(&in_map);
+
+        outputs.iter_mut().for_each(|i| i.push(&out_map));
     }
 }
