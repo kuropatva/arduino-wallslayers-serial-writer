@@ -1,17 +1,14 @@
 use std::collections::HashMap;
 
-use interface::console::Console;
-use logic::Logic;
-use logic_console::LogicBasicConsole;
-use physicalio::{
-    data::Data, datatype::Datatype, electronics::wheel_out_wrapper::WheelOutWrapper, input::Input,
-    output::Output, writer::Writer,
-};
+use crate::data::{data::Data, datatype::Datatype};
+use crate::io::interface::console::Console;
+use io::physical::{electronics::wheel_out_wrapper::WheelOutWrapper, writer::Writer};
+use io::{input::Input, output::Output};
+use processing::{logic::Logic, logic_console::LogicBasicConsole};
 
-mod interface;
-pub mod logic;
-pub mod logic_console;
-mod physicalio;
+pub mod data;
+pub mod io;
+pub mod processing;
 
 fn main() -> ! {
     let serial_port_name = "COM10";

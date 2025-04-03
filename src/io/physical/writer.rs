@@ -54,10 +54,10 @@ impl Writer {
     }
 
     pub fn write32(&mut self, i: i32) {
-        write_i32(&mut self.port, i);
+        let _ = write_i32(&mut self.port, i);
     }
 
     pub fn write16(&mut self, i: i16) {
-        write_i16(&mut self.port, i);
+        let _ = write_i16(&mut self.port, i);
     }
 }

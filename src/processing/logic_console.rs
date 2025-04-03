@@ -1,9 +1,7 @@
 use std::collections::HashMap;
 
-use crate::{
-    logic::Logic,
-    physicalio::{data::Data, datatype::Datatype},
-};
+use crate::Logic;
+use crate::data::{data::Data, datatype::Datatype};
 
 pub struct LogicBasicConsole {}
 

@@ -1,11 +1,10 @@
 use std::collections::HashMap;
 
-use crate::physicalio::{
-    data::{self, Data},
-    datatype::Datatype,
-    output::Output,
-    writer::Writer,
-};
+use crate::io::output::Output;
+use crate::io::physical::writer::Writer;
+
+use crate::data::{data::Data, datatype::Datatype};
+
 pub struct WheelOutWrapper<'a> {
     writer: &'a mut Writer,
 }
@@ -17,7 +16,7 @@ impl<'a> WheelOutWrapper<'a> {
 }
 
 impl Output for WheelOutWrapper<'_> {
-    fn push(&mut self, map: &HashMap<Datatype, data::Data>) {
+    fn push(&mut self, map: &HashMap<Datatype, Data>) {
         let Some(data) = &map.get(&Datatype::WheelOut) else {
             return;
         };
