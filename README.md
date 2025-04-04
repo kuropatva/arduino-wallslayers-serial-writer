@@ -1,2 +1,7 @@
 # arduino-wallslayers-serial-writer
-Internal WIP tool
+Writer for https://github.com/eevee71/arduino-wallslayers-serial-receiver
+
+### Dependencies
+
+https://github.com/araffin/arduino-robust-serial (Rust)
+
